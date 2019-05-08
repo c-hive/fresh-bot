@@ -1,0 +1,14 @@
+# Dependencies
+/node_modules
+
+# Transpiled lib folder
+/lib
+
+# Test coveragement
+.nyc_output
+/coverage
+
+# npm package lock
+/package-lock.json
+
+private_notes.md
