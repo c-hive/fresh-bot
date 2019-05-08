@@ -8,7 +8,4 @@
 .nyc_output
 /coverage
 
-# npm package lock
-/package-lock.json
-
 private_notes.md
