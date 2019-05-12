@@ -3,54 +3,40 @@
   "version": "0.1.0",
   "description": "A bot against stale bots",
   "author": "thisismydesign",
-  "license": "ISC",
+  "license": "MIT",
   "repository": "https://github.com/thisismydesign/yes-my-issue-is-important.git",
   "homepage": "https://github.com/thisismydesign/yes-my-issue-is-important",
   "bugs": "https://github.com/thisismydesign/yes-my-issue-is-important/issues",
   "keywords": [
-    "probot",
-    "github",
-    "probot-app"
+    "github"
   ],
   "scripts": {
     "dev": "nodemon",
-    "start": "probot run ./index.js",
-    "lint": "standard --fix",
-    "test": "jest && standard",
-    "test:watch": "jest --watch --notify --notifyMode=change --coverage"
+    "start": "node ./bin/www"
+  },
+  "//dependencies": {
+    "cookie-parser": "default express dependency",
+    "debug": "default express dependency",
+    "morgan": "default express dependency"
   },
   "dependencies": {
     "@octokit/plugin-throttling": "^2.4.0",
     "@octokit/rest": "^16.25.3",
     "axios": "^0.18.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.0.0",
+    "express": "~4.16.1",
     "moment": "^2.24.0",
+    "morgan": "~1.9.1",
     "probot": "^7.2.0",
     "query-string": "^6.5.0",
     "url-pattern": "^1.0.3"
   },
+  "//devDependencies": {
+    "nodemon": "dev server"
+  },
   "devDependencies": {
-    "jest": "^24.0.0",
-    "nock": "^10.0.0",
-    "nodemon": "^1.17.2",
-    "smee-client": "^1.0.2",
-    "standard": "^12.0.1"
-  },
-  "engines": {
-    "node": ">= 8.3.0"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
-  },
-  "nodemonConfig": {
-    "exec": "npm start",
-    "watch": [
-      ".env",
-      "."
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node"
+    "nodemon": "^1.19.0"
   }
 }
