@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -8,9 +9,6 @@ const UrlPattern = require('url-pattern');
 const moment = require('moment');
 const axios = require('axios');
 axios.defaults.headers.post['Accept'] = 'application/json';
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 var router = express.Router();
@@ -31,7 +29,6 @@ router.get('/login', async (req, res) => {
 })
 
 router.get('/login/cb', async (req, res) => {
-    
   // Exchange our "code" and credentials for a real token
   const response = await axios.post('https://github.com/login/oauth/access_token', {
     client_id: process.env.CLIENT_ID,
@@ -61,9 +58,10 @@ router.get('/login/cb', async (req, res) => {
 
   const notifications_request = octokit.activity.listNotifications.endpoint.merge({
     all: true,
-    since: moment().subtract(2 , 'day')
+    since: moment().subtract(10 , 'day')
   })
   const notifications = await octokit.paginate(notifications_request)
+  console.log(`Processing ${notifications.length} notifications...`)
 
   notifications.forEach(async (notification) => {
     const latest_comment_url = notification.subject.latest_comment_url
@@ -93,6 +91,8 @@ router.get('/login/cb', async (req, res) => {
     }
   })
 
+  console.log(`Done.`)
+
   res.redirect('/')
 })
 
@@ -103,6 +103,5 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', router);
-// app.use('/users', usersRouter);
 
 module.exports = app;
