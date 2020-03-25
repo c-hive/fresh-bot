@@ -1,12 +1,12 @@
-# Yes, my issue is important
+# Fresh
 
-#### A bot against stale bots.
+#### The opposite of [Stale](https://github.com/apps/stale). A bot against stale bots.
 
-This GitHub OAtuh app will leave a comment in your name whenever a [stale bot](https://github.com/marketplace/stale) is about to close an issue you're subscribed to. _Let the fight begin._
+This GitHub OAtuh app will leave a comment in your name whenever a stale bot is about to close an issue you're subscribed to. _Let the fight begin._
 
 ## Why?
 
-Issues don't go away just because you don't look. Many projects maintain a facade of good health by ignoring and auto-closing issues. Closed issues discourage outside contribution. It is often unclear whether an issue is still present without reading through the whole thread. And so on. This scenario is a nightmare for developers. A reasonable alternative would be using tags for issues that don't warrant the internal developer(s) attention.
+Issues don't go away just because you don't look. Many projects maintain a facade of good health by ignoring and auto-closing issues. Closed issues discourage outside contribution. It is often unclear whether an issue is still present. And so on. This scenario is a nightmare for developers.
 
 ## How?
 
