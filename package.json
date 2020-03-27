@@ -2,6 +2,7 @@
   "name": "fresh",
   "version": "0.1.0",
   "description": "A bot against stale bots",
+  "main": "dist/index.js",
   "author": "thisismydesign",
   "license": "ISC",
   "repository": "https://github.com/thisismydesign/yes-my-issue-is-important.git",
@@ -13,6 +14,7 @@
     "probot-app"
   ],
   "scripts": {
+    "build": "ncc build index.js",
     "dev": "nodemon",
     "lint": "eslint . --no-error-on-unmatched-pattern",
     "lint:fix": "eslint . --no-error-on-unmatched-pattern --fix",
@@ -30,6 +32,7 @@
     "url-pattern": "^1.0.3"
   },
   "devDependencies": {
+    "@zeit/ncc": "^0.22.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.10.1",
