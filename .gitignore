@@ -8,4 +8,5 @@
 .nyc_output
 /coverage
 
-private_notes.md
+# environment variables
+/.env
