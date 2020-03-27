@@ -1,0 +1,10 @@
+name: 'Fresh'
+author: 'c-hive'
+description: ''
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+inputs:
+  GITHUB_TOKEN:
+    description: 'Personal access token with full control of private repositories scope enabled'
+    required: true
