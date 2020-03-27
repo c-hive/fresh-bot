@@ -1,4 +1,3 @@
-/* eslint-disable */
 const queryString = require("query-string");
 const Octokit = require("@octokit/rest").plugin(
   require("@octokit/plugin-throttling")
