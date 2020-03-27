@@ -8,6 +8,3 @@ inputs:
   GITHUB_TOKEN:
     description: 'Personal access token with full control of private repositories scope enabled'
     required: true
-  COMMENT:
-    description: 'The desired content to be written in response to stale bots'
-    required: false
