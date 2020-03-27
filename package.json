@@ -3,66 +3,39 @@
   "version": "0.1.0",
   "description": "A bot against stale bots",
   "main": "dist/index.js",
-  "author": "thisismydesign",
-  "license": "ISC",
-  "repository": "https://github.com/thisismydesign/yes-my-issue-is-important.git",
-  "homepage": "https://github.com/thisismydesign/yes-my-issue-is-important",
-  "bugs": "https://github.com/thisismydesign/yes-my-issue-is-important/issues",
-  "keywords": [
-    "probot",
-    "github",
-    "probot-app"
-  ],
   "scripts": {
     "build": "ncc build index.js",
-    "dev": "nodemon",
+    "dev": "cross-env NODE_ENV=dev node ./index.js",
     "lint": "eslint . --no-error-on-unmatched-pattern",
-    "lint:fix": "eslint . --no-error-on-unmatched-pattern --fix",
-    "start": "probot run ./index.js",
-    "test": "jest && standard",
-    "test:watch": "jest --watch --notify --notifyMode=change --coverage"
+    "lint:fix": "eslint . --no-error-on-unmatched-pattern --fix"
   },
   "dependencies": {
-    "@octokit/plugin-throttling": "^2.4.0",
-    "@octokit/rest": "^16.25.3",
-    "axios": "^0.18.0",
-    "moment": "^2.24.0",
-    "probot": "^7.2.0",
-    "query-string": "^6.5.0",
-    "url-pattern": "^1.0.3"
+    "@actions/core": "^1.2.3",
+    "@octokit/action": "^2.0.3",
+    "@octokit/plugin-throttling": "^3.2.0",
+    "moment": "^2.24.0"
+  },
+  "//devDependencies": {
+    "@zeit/ncc": "compile action into a single file",
+    "dotenv-safe": "load environment variables for local development",
+    "eslint*": "code style",
+    "pre-commit": "run scripts before each commit",
+    "prettier": "code formatting"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.22.0",
+    "cross-env": "^7.0.2",
+    "dotenv-safe": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.0.0",
-    "nock": "^10.0.0",
-    "nodemon": "^1.17.2",
     "pre-commit": "^1.2.2",
-    "prettier": "^2.0.2",
-    "smee-client": "^1.0.2"
+    "prettier": "^2.0.2"
   },
   "engines": {
-    "node": ">= 8.3.0",
     "npm": ">=6.6"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
-  },
-  "nodemonConfig": {
-    "exec": "npm start",
-    "watch": [
-      ".env",
-      "."
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node"
   },
   "pre-commit": [
     "lint"
