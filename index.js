@@ -13,8 +13,10 @@ if (devEnv) {
 
 const configs = {
   retriesEnabled: true,
-  botRegex: /\[bot\]$/,
-  contentRegex: /^This issue has been automatically marked as stale/,
+  botRegex: new RegExp("\\b(\\w*bot\\w*)\\b"),
+  contentRegex: new RegExp(
+    "^This issue has been automatically marked as stale"
+  ),
   pattern: new UrlPattern(
     "https\\://api.github.com/repos/:owner/:repo/issues/:number"
   ),
@@ -72,10 +74,7 @@ async function run() {
         const { login: user } = data.user;
         const { body } = data;
 
-        if (
-          !user.match(configs.botRegex) ||
-          !body.match(configs.contentRegex)
-        ) {
+        if (!configs.botRegex.test(user) || !configs.contentRegex.test(body)) {
           return new Promise((resolve) => {
             console.log("There's no stale bot comment for ", subjectUrl);
 
@@ -102,6 +101,7 @@ async function run() {
 
         return octokit.issues.createComment({
           ...issueUrlParams,
+          issue_number: issueUrlParams.number,
           body: configs.message,
         });
       });
