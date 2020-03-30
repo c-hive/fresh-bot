@@ -66,7 +66,7 @@ async function run() {
   const notificationsRequest = octokit.activity.listNotificationsForAuthenticatedUser.endpoint.merge(
     {
       all: true,
-      since: moment().subtract(3, "hours").toISOString(),
+      since: moment().subtract(7, "days").toISOString(),
     }
   );
 
