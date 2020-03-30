@@ -447,9 +447,32 @@ if (devEnv) {
   __webpack_require__(245).config();
 }
 
+const regExes = {
+  botMatchers: {
+    users: [new RegExp("\\w*bot\\w*")],
+    bodies: [new RegExp("^This issue has been automatically marked as stale")],
+  },
+  // Otherwise, the escape characters are removed from the expression.
+  // eslint-disable-next-line prettier/prettier, no-useless-escape
+  commentUrlParams: new RegExp("(?:https:\/\/)(?:api\.github\.com)\/(?:repos)\/(?<owner>\\w+)\/(?<repo>\\w+)\/(?:issues)\/(?<issue_number>[0-9]+)"),
+};
+
 const configs = {
   retriesEnabled: true,
+  message:
+    "Don't close this issue please. This is automatic message by [Yes, my issue is important](https://github.com/c-hive/fresh) - a bot against stable bots.",
 };
+
+function isBot(user, body) {
+  const userMatch = regExes.botMatchers.users.some((userRegex) =>
+    userRegex.test(user)
+  );
+  const bodyMatch = regExes.botMatchers.bodies.some((bodyRegex) =>
+    bodyRegex.test(body)
+  );
+
+  return userMatch && bodyMatch;
+}
 
 const ThrottledOctokit = Octokit.plugin(throttling);
 
@@ -480,15 +503,62 @@ async function run() {
   const notificationsRequest = octokit.activity.listNotificationsForAuthenticatedUser.endpoint.merge(
     {
       all: true,
-      since: moment().subtract(2, "days").toISOString(),
+      since: moment().subtract(7, "days").toISOString(),
     }
   );
 
-  await octokit.paginate(notificationsRequest);
+  return octokit.paginate(notificationsRequest).then((notifications) => {
+    const promises = notifications.map((notification) => {
+      const { latest_comment_url: latestCommentUrl } = notification.subject;
+      const { url: subjectUrl } = notification.subject;
+
+      if (!latestCommentUrl || !subjectUrl) {
+        return new Promise((resolve) => {
+          console.log("Missing latest comment or subject url");
+
+          resolve();
+        });
+      }
+
+      return octokit.request(latestCommentUrl).then(({ data }) => {
+        const { login: user } = data.user;
+        const { body } = data;
+
+        if (!isBot(user, body)) {
+          return new Promise((resolve) => {
+            console.log("There's no stale bot comment for ", subjectUrl);
+
+            resolve();
+          });
+        }
+
+        console.log("Found stale bot comment: ", subjectUrl);
+
+        if (devEnv) {
+          return new Promise((resolve) => {
+            console.log(
+              "Responding to stale bot comments is disabled in development environment."
+            );
+
+            resolve();
+          });
+        }
+
+        const commentParams = regExes.commentUrlParams.exec(subjectUrl);
+
+        return octokit.issues.createComment({
+          ...commentParams.groups,
+          body: configs.message,
+        });
+      });
+    });
+
+    return Promise.all(promises);
+  });
 }
 
 run().catch((err) => {
-  core.setFailed(err.message);
+  core.setFailed(err);
 });
 
 
