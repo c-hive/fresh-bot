@@ -13,8 +13,7 @@
     "@actions/core": "^1.2.3",
     "@octokit/action": "^2.0.3",
     "@octokit/plugin-throttling": "^3.2.0",
-    "moment": "^2.24.0",
-    "url-pattern": "^1.0.3"
+    "moment": "^2.24.0"
   },
   "//devDependencies": {
     "@zeit/ncc": "compile action into a single file",

@@ -1,7 +1,6 @@
 const core = require("@actions/core");
 const { Octokit } = require("@octokit/action");
 const { throttling } = require("@octokit/plugin-throttling");
-const UrlPattern = require("url-pattern");
 const moment = require("moment");
 
 const devEnv = process.env.NODE_ENV === "dev";
@@ -11,18 +10,32 @@ if (devEnv) {
   require("dotenv-safe").config();
 }
 
+const regExes = {
+  botMatchers: {
+    users: [new RegExp("\\w*bot\\w*")],
+    bodies: [new RegExp("^This issue has been automatically marked as stale")],
+  },
+  // Otherwise, the escape characters are removed from the expression.
+  // eslint-disable-next-line prettier/prettier, no-useless-escape
+  commentUrlParams: new RegExp("(?:https:\/\/)(?:api\.github\.com)\/(?:repos)\/(?<owner>\\w+)\/(?<repo>\\w+)\/(?:issues)\/(?<number>[0-9]+)"),
+};
+
 const configs = {
   retriesEnabled: true,
-  botRegex: new RegExp("\\b(\\w*bot\\w*)\\b"),
-  contentRegex: new RegExp(
-    "^This issue has been automatically marked as stale"
-  ),
-  pattern: new UrlPattern(
-    "https\\://api.github.com/repos/:owner/:repo/issues/:number"
-  ),
   message:
     "Don't close this issue please. This is automatic message by [Yes, my issue is important](https://github.com/c-hive/fresh) - a bot against stable bots.",
 };
+
+function isBot(user, body) {
+  const userMatch = regExes.botMatchers.users.some((userRegex) =>
+    userRegex.test(user)
+  );
+  const bodyMatch = regExes.botMatchers.bodies.some((bodyRegex) =>
+    bodyRegex.test(body)
+  );
+
+  return userMatch && bodyMatch;
+}
 
 const ThrottledOctokit = Octokit.plugin(throttling);
 
@@ -74,7 +87,7 @@ async function run() {
         const { login: user } = data.user;
         const { body } = data;
 
-        if (!configs.botRegex.test(user) || !configs.contentRegex.test(body)) {
+        if (!isBot(user, body)) {
           return new Promise((resolve) => {
             console.log("There's no stale bot comment for ", subjectUrl);
 
@@ -94,14 +107,10 @@ async function run() {
           });
         }
 
-        const pattern = new UrlPattern(
-          "https\\://api.github.com/repos/:owner/:repo/issues/:number"
-        );
-        const issueUrlParams = pattern.match(subjectUrl);
+        const commentParams = regExes.commentUrlParams.exec(subjectUrl);
 
         return octokit.issues.createComment({
-          ...issueUrlParams,
-          issue_number: issueUrlParams.number,
+          ...commentParams,
           body: configs.message,
         });
       });
