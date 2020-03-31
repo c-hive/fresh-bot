@@ -2,7 +2,7 @@
 
 #### The opposite of [Stale](https://github.com/apps/stale). A bot against stale bots.
 
-This GitHub OAtuh app will leave a comment in your name whenever a stale bot is about to close an issue you're subscribed to. _Let the fight begin._
+This GitHub Action will leave a comment in your name whenever a stale bot is about to close an issue you're subscribed to. _Let the fight begin._
 
 ## Why?
 
@@ -10,7 +10,28 @@ Issues don't go away just because you don't look. Many projects maintain a facad
 
 ## How?
 
-The app watches notifications and acts when a bot comments a stale warning, usualy starting with "`This issue has been automatically marked as stale`".
+The action queries user-level notifications within a certain timeframe to seek and identify automated stale bot comments.
+
+## Usage
+
+```yml
+name: Automated response to stale bot comments
+
+on:
+  schedule:
+    # Every day at 1am
+    - cron: '0 1 * * *'
+
+  jobs:
+    name: stale-bot-response:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Uses c-hive/fresh
+          uses: c-hive/fresh@v1
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+```
 
 ## Conventions
 
