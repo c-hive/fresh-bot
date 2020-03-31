@@ -10,7 +10,7 @@ Issues don't go away just because you don't look. Many projects maintain a facad
 
 ## How?
 
-The action queries user-level notifications within a certain timeframe to seek and identify automated stale bot comments.
+The action queries user-level notifications within a certain timeframe to seek and identify automated stale bot comments, usually starting with *This issue has been automatically marked as stale*".
 
 ## Usage
 
