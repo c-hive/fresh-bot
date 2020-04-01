@@ -10,11 +10,9 @@ Issues don't go away just because you don't look. Many projects maintain a facad
 
 ## How?
 
-The action queries user-level notifications within a certain timeframe to seek and identify automated stale bot comments, usually starting with "*This issue has been automatically marked as stale*".
+The action checks notifications and acts when a bot comments a stale warning, usually starting with "*This issue has been automatically marked as stale*". It will then make a comment if no-one else did that yet.
 
 ## Usage
-
-The personal access token has to have *full control of private repositories* scope enabled to query notifications and be able to comment in your name as needed.
 
 ```yml
 name: Automated response to stale bot comments
@@ -32,7 +30,7 @@ on:
         - name: Uses c-hive/fresh
           uses: c-hive/fresh@v1
           with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }} # Needs `repo` scope
 ```
 
 ## Conventions
