@@ -14,7 +14,7 @@ The action queries user-level notifications within a certain timeframe to seek a
 
 ## Usage
 
-The personal access token has to have *full control of private repositories* scope enabled to query notifications and be able to comment in your name.
+The personal access token has to have *full control of private repositories* scope enabled to query notifications and be able to comment in your name as needed.
 
 ```yml
 name: Automated response to stale bot comments
