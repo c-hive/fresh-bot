@@ -460,7 +460,7 @@ const regExes = {
 const configs = {
   retriesEnabled: true,
   message:
-    "Don't close this issue please. This is automatic message by [Yes, my issue is important](https://github.com/c-hive/fresh) - a bot against stable bots.",
+    "Don't close this issue. This is automatic message by [Fresh](https://github.com/c-hive/fresh) - a bot against stable bots.",
 };
 
 function isBot(user, body) {
