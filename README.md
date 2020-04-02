@@ -1,4 +1,4 @@
-# Fresh
+# Fresh-bot
 
 #### The opposite of [Stale](https://github.com/apps/stale). A bot against stale bots.
 
@@ -27,8 +27,8 @@ on:
       runs-on: ubuntu-latest
 
       steps:
-        - name: Uses c-hive/fresh
-          uses: c-hive/fresh@v1
+        - name: Uses c-hive/fresh-bot
+          uses: c-hive/fresh-bot@v1
           with:
             GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }} # Needs `repo` scope
 ```
