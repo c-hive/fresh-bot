@@ -27,7 +27,7 @@ on:
       runs-on: ubuntu-latest
 
       steps:
-        - name: Uses c-hive/fresh-bot
+        - name: Comment on stale issues
           uses: c-hive/fresh-bot@v1
           with:
             GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }} # Needs `repo` scope
