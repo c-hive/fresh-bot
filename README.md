@@ -14,12 +14,17 @@ The action checks notifications and acts when a bot comments a stale warning, us
 
 ## Usage
 
+- Create a repo for running personal actions or use any repo
+- Create a [Personal Access Token](https://github.com/settings/tokens) with `repo` scope and set it as a repository secret with the name `PERSONAL_ACCESS_TOKEN`
+- Commit the workflow below
+
+`.github/workflows/fresh-bot.yml`
 ```yml
 name: Bump stale issues
 
 on:
   schedule:
-    # Every day at 1am
+    # Run every day at 1am
     - cron: '0 1 * * *'
 
 jobs:
