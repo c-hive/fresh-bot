@@ -6,7 +6,7 @@ This GitHub Action will leave a comment in your name whenever a stale bot is abo
 
 ## Why?
 
-Issues don't go away just because you don't look. Many projects maintain a facade of good health by ignoring and auto-closing issues. Closed issues discourage outside contributions. It is often unclear whether an issue is still present. And so on. This scenario is a nightmare for developers.
+Issues don't go away just because you don't look. Many projects maintain a facade of good health by ignoring and auto-closing issues. Closed issues fragment the discussion and discourage outside contributions. It is often unclear whether an issue is still present. And so on. This scenario is a nightmare for developers.
 
 ## How?
 
