@@ -22,15 +22,15 @@ on:
     # Every day at 1am
     - cron: '0 1 * * *'
 
-  jobs:
-    name: stale-bot-response:
-      runs-on: ubuntu-latest
+jobs:
+  stale-bot-response:
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Comment on stale issues
-          uses: c-hive/fresh-bot@v1
-          with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }} # Needs `repo` scope
+    steps:
+      - name: Comment on stale issues
+        uses: c-hive/fresh-bot@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # Needs `repo` scope
 ```
 
 ## Conventions
