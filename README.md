@@ -10,12 +10,12 @@ Issues don't go away just because you don't look. Many projects maintain a facad
 
 ## How?
 
-The action checks notifications and acts when a bot comments a stale warning, usually starting with "*This issue has been automatically marked as stale*". It will then make a comment if no-one else did that yet.
+The action checks notifications and acts when a bot comments a stale warning, usually something like "*This issue has been automatically marked as stale*". It will then make a comment if no one else did that yet.
 
 ## Usage
 
 ```yml
-name: Automated response to stale bot comments
+name: Bump stale issues
 
 on:
   schedule:
@@ -23,11 +23,11 @@ on:
     - cron: '0 1 * * *'
 
 jobs:
-  stale-bot-response:
+  fresh-bot:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Comment on stale issues
+      - name: Bump stale issues
         uses: c-hive/fresh-bot@v1
         with:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # Needs `repo` scope
