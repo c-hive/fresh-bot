@@ -17,7 +17,7 @@ const regExes = {
   },
   // Otherwise, the escape characters are removed from the expression.
   // eslint-disable-next-line prettier/prettier, no-useless-escape
-  commentUrlParams: new RegExp("(?:https:\/\/)(?:api\.github\.com)\/(?:repos)\/(?<owner>[a-zA-Z0-9-_]+)\/(?<repo>[a-zA-Z0-9-_]+)\/(?:issues)\/(?<issue_number>[0-9]+)"),
+  commentUrlParams: new RegExp("(?:https:\/\/)(?:api\.github\.com)\/(?:repos)\/(?<owner>[a-zA-Z0-9-]+)\/(?<repo>[a-zA-Z0-9-]+)\/(?:issues)\/(?<issue_number>[0-9]+)"),
 };
 
 const configs = {
