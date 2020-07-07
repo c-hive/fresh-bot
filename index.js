@@ -37,6 +37,16 @@ function isBot(user, body) {
   return userMatch && bodyMatch;
 }
 
+function propertyExists(object, key) {
+  if (!Object.prototype.hasOwnProperty.call(object, key)) {
+    console.error(`Missing ${key} property on: `, object);
+
+    return false;
+  }
+
+  return true;
+}
+
 const ThrottledOctokit = Octokit.plugin(throttling);
 
 async function run() {
@@ -72,18 +82,22 @@ async function run() {
 
   return octokit.paginate(notificationsRequest).then((notifications) => {
     const promises = notifications.map((notification) => {
+      if (
+        !propertyExists(notification, "subject") ||
+        !propertyExists(notification.subject, "latest_comment_url") ||
+        !propertyExists(notification.subject, "url")
+      ) {
+        return Promise.reject();
+      }
+
       const { latest_comment_url: latestCommentUrl } = notification.subject;
       const { url: subjectUrl } = notification.subject;
 
-      if (!latestCommentUrl || !subjectUrl) {
-        return new Promise((resolve) => {
-          console.log("Missing latest comment or subject url");
-
-          resolve();
-        });
-      }
-
       return octokit.request(latestCommentUrl).then(({ data }) => {
+        if (!propertyExists(data, "login") || !propertyExists(data, "body")) {
+          return Promise.reject();
+        }
+
         const { login: user } = data.user;
         const { body } = data;
 
