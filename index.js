@@ -38,13 +38,23 @@ function isBot(user, body) {
 }
 
 function propertyExists(object, key) {
-  if (!Object.prototype.hasOwnProperty.call(object, key)) {
-    console.error(`Missing ${key} property on: `, object);
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
 
-    return false;
-  }
+function rejectJob(...args) {
+  return new Promise((_, reject) => {
+    console.error(...args);
 
-  return true;
+    reject();
+  });
+}
+
+function resolveJob(...args) {
+  return new Promise((resolve) => {
+    console.log(...args);
+
+    resolve();
+  });
 }
 
 const ThrottledOctokit = Octokit.plugin(throttling);
@@ -82,43 +92,56 @@ async function run() {
 
   return octokit.paginate(notificationsRequest).then((notifications) => {
     const promises = notifications.map((notification) => {
-      if (
-        !propertyExists(notification, "subject") ||
-        !propertyExists(notification.subject, "latest_comment_url") ||
-        !propertyExists(notification.subject, "url")
-      ) {
-        return Promise.reject();
+      if (!propertyExists(notification, "subject")) {
+        return rejectJob(
+          "Could not find 'subject' property for notification: ",
+          notification
+        );
+      }
+
+      if (!propertyExists(notification.subject, "latest_comment_url")) {
+        return rejectJob(
+          "Could not find 'latest_comment_url' property for: ",
+          notification.subject
+        );
+      }
+
+      if (!propertyExists(notification.subject, "url")) {
+        return rejectJob(
+          "Could not find 'url' property for: ",
+          notification.subject
+        );
       }
 
       const { latest_comment_url: latestCommentUrl } = notification.subject;
       const { url: subjectUrl } = notification.subject;
 
       return octokit.request(latestCommentUrl).then(({ data }) => {
-        if (!propertyExists(data, "user") || !propertyExists(data, "body")) {
-          return Promise.reject();
+        if (!propertyExists(data, "user")) {
+          return rejectJob(
+            `Could not find 'user' property for comment ${latestCommentUrl}`
+          );
+        }
+
+        if (!propertyExists(data, "body")) {
+          return rejectJob(
+            `Could not find 'body' property for comment ${latestCommentUrl}`
+          );
         }
 
         const { login: user } = data.user;
         const { body } = data;
 
         if (!isBot(user, body)) {
-          return new Promise((resolve) => {
-            console.log("There's no stale bot comment for ", subjectUrl);
-
-            resolve();
-          });
+          return resolveJob("There's no stale bot comment for ", subjectUrl);
         }
 
         console.log("Found stale bot comment: ", subjectUrl);
 
         if (devEnv) {
-          return new Promise((resolve) => {
-            console.log(
-              "Responding to stale bot comments is disabled in development environment."
-            );
-
-            resolve();
-          });
+          return resolveJob(
+            "Responding to stale bot comments is disabled in development environment."
+          );
         }
 
         const commentParams = regExes.commentUrlParams.exec(subjectUrl);
