@@ -94,7 +94,7 @@ async function run() {
       const { url: subjectUrl } = notification.subject;
 
       return octokit.request(latestCommentUrl).then(({ data }) => {
-        if (!propertyExists(data, "login") || !propertyExists(data, "body")) {
+        if (!propertyExists(data, "user") || !propertyExists(data, "body")) {
           return Promise.reject();
         }
 
