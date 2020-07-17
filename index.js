@@ -84,6 +84,16 @@ async function run() {
       }
 
       return octokit.request(latestCommentUrl).then(({ data }) => {
+        const releaseNotification = data.author && !data.user;
+
+        if (releaseNotification) {
+          return new Promise((resolve) => {
+            console.log("Release notification detected: ", subjectUrl);
+
+            resolve();
+          });
+        }
+
         const { login: user } = data.user;
         const { body } = data;
 
