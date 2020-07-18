@@ -76,18 +76,18 @@ async function run() {
       const { url: subjectUrl } = notification.subject;
 
       if (!latestCommentUrl || !subjectUrl) {
-        return Promise.resolve();
+        return new Promise((resolve) => {
+          console.log("Missing latest comment or subject url");
+
+          resolve();
+        });
       }
 
       return octokit.request(latestCommentUrl).then(({ data }) => {
         const releaseNotification = data.author && !data.user;
 
         if (releaseNotification) {
-          return new Promise((resolve) => {
-            console.log("Release notification detected: ", subjectUrl);
-
-            resolve();
-          });
+          return Promise.resolve();
         }
 
         const { login: user } = data.user;
