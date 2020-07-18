@@ -76,11 +76,7 @@ async function run() {
       const { url: subjectUrl } = notification.subject;
 
       if (!latestCommentUrl || !subjectUrl) {
-        return new Promise((resolve) => {
-          console.log("Missing latest comment or subject url");
-
-          resolve();
-        });
+        return Promise.resolve();
       }
 
       return octokit.request(latestCommentUrl).then(({ data }) => {
