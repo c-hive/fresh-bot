@@ -521,6 +521,12 @@ async function run() {
       }
 
       return octokit.request(latestCommentUrl).then(({ data }) => {
+        const releaseNotification = data.author && !data.user;
+
+        if (releaseNotification) {
+          return Promise.resolve();
+        }
+
         const { login: user } = data.user;
         const { body } = data;
 
