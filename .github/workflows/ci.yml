@@ -10,19 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.node_version }}
-    - name: Cache node_modules
-      uses: actions/cache@v1
-      with:
-        path: node_modules
-        key: ${{ runner.OS }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.OS }}-node_modules-
+    - uses: c-hive/gha-npm-cache@v1
     - name: Install JS dependencies
-      run: ls package-lock.json && npm install || yarn install
+      run: npm install
     - name: Lint
-      run: ls package-lock.json && npm run lint || yarn lint
+      run: npm run lint
