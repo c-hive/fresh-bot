@@ -1,3 +1,6 @@
+import { isBot, commentUrlParamsRegex } from "./src/utils/utils";
+import { config } from "./src/config/config";
+
 const core = require("@actions/core");
 const { Octokit } = require("@octokit/action");
 const { throttling } = require("@octokit/plugin-throttling");
@@ -8,34 +11,6 @@ const devEnv = process.env.NODE_ENV === "dev";
 if (devEnv) {
   // eslint-disable-next-line global-require, import/no-extraneous-dependencies
   require("dotenv-safe").config();
-}
-
-const regExes = {
-  botMatchers: {
-    users: [new RegExp("\\w*bot\\w*")],
-
-    bodies: [new RegExp("^This issue has been automatically marked as stale")],
-  },
-  // Otherwise, the escape characters are removed from the expression.
-  // eslint-disable-next-line prettier/prettier, no-useless-escape
-  commentUrlParams: new RegExp("(?:https:\/\/)(?:api\.github\.com)\/(?:repos)\/(?<owner>[\\w-]+)\/(?<repo>[\\w-]+)\/(?:issues)\/(?<issue_number>[0-9]+)"),
-};
-
-const configs = {
-  retriesEnabled: true,
-  message:
-    "Don't close this issue. This is an automatic message by [Fresh](https://github.com/c-hive/fresh) - a bot against stale bots.",
-};
-
-function isBot(user, body) {
-  const userMatch = regExes.botMatchers.users.some((userRegex) =>
-    userRegex.test(user)
-  );
-  const bodyMatch = regExes.botMatchers.bodies.some((bodyRegex) =>
-    bodyRegex.test(body)
-  );
-
-  return userMatch && bodyMatch;
 }
 
 const ThrottledOctokit = Octokit.plugin(throttling);
@@ -50,7 +25,7 @@ async function run() {
 
         console.log(`Retrying after ${retryAfter} seconds!`);
 
-        return configs.retriesEnabled;
+        return config.retriesEnabled;
       },
       onAbuseLimit: (retryAfter, options) => {
         console.error(
@@ -59,7 +34,7 @@ async function run() {
 
         console.log(`Retrying after ${retryAfter} seconds!`);
 
-        return configs.retriesEnabled;
+        return config.retriesEnabled;
       },
     },
   });
@@ -91,10 +66,7 @@ async function run() {
           return Promise.resolve();
         }
 
-        const { login: user } = data.user;
-        const { body } = data;
-
-        if (!isBot(user, body)) {
+        if (!isBot(data)) {
           return new Promise((resolve) => {
             console.log(
               "Comment for",
@@ -124,11 +96,11 @@ async function run() {
           });
         }
 
-        const commentParams = regExes.commentUrlParams.exec(subjectUrl);
+        const commentParams = commentUrlParamsRegex.exec(subjectUrl);
 
         return octokit.issues.createComment({
           ...commentParams.groups,
-          body: configs.message,
+          body: config.message,
         });
       });
     });

@@ -7,7 +7,8 @@
     "build": "ncc build index.js --minify",
     "dev": "cross-env NODE_ENV=dev node ./index.js",
     "lint": "eslint . --no-error-on-unmatched-pattern",
-    "lint:fix": "eslint . --no-error-on-unmatched-pattern --fix"
+    "lint:fix": "eslint . --no-error-on-unmatched-pattern --fix",
+    "test": "mocha src/**/*.test.js --require esm"
   },
   "dependencies": {
     "@actions/core": "^1.2.3",
@@ -16,28 +17,36 @@
     "moment": "^2.24.0"
   },
   "//devDependencies": {
-    "@zeit/ncc": "compile action into a single file",
+    "@zeit/ncc": "build into a single file",
     "dotenv-safe": "load environment variables for local development",
     "eslint*": "code style",
     "pre-commit": "run scripts before each commit",
-    "prettier": "code formatting"
+    "prettier": "code formatting",
+    "mocha": "test farmework",
+    "chai": "test assertions",
+    "esm": "ES^ support for mocha"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.22.0",
+    "chai": "^4.2.0",
     "cross-env": "^7.0.2",
     "dotenv-safe": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-chai-friendly": "^0.6.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "mocha": "^8.0.1",
     "pre-commit": "^1.2.2",
-    "prettier": "^2.0.2"
+    "prettier": "^2.0.2",
+    "esm": "^3.2.25"
   },
   "engines": {
     "npm": ">=6.6"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "test"
   ]
 }
