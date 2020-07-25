@@ -83,7 +83,7 @@ export async function run() {
           subjectUrl
         );
 
-        if (devEnv) {
+        if (devEnv()) {
           return new Promise((resolve) => {
             console.log(
               "Responding to stale bot comments is disabled in development environment."
