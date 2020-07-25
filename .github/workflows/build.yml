@@ -34,3 +34,4 @@ jobs:
         with:
           commit_message: 'Update distified version'
           file_pattern: 'dist/index.js'
+          commit_options: '--allow-empty'
