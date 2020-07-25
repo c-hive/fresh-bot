@@ -4,7 +4,7 @@
   "description": "A bot against stale bots",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build index.js",
+    "build": "ncc build index.js --minify",
     "dev": "cross-env NODE_ENV=dev node ./index.js",
     "lint": "eslint . --no-error-on-unmatched-pattern",
     "lint:fix": "eslint . --no-error-on-unmatched-pattern --fix"
