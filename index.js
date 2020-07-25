@@ -13,6 +13,7 @@ if (devEnv) {
 const regExes = {
   botMatchers: {
     users: [new RegExp("\\w*bot\\w*")],
+
     bodies: [new RegExp("^This issue has been automatically marked as stale")],
   },
   // Otherwise, the escape characters are removed from the expression.
@@ -95,13 +96,23 @@ async function run() {
 
         if (!isBot(user, body)) {
           return new Promise((resolve) => {
-            console.log("There's no stale bot comment for ", subjectUrl);
+            console.log(
+              "Comment for",
+              latestCommentUrl,
+              "is not left by a stale bot on issue",
+              subjectUrl
+            );
 
             resolve();
           });
         }
 
-        console.log("Found stale bot comment: ", subjectUrl);
+        console.log(
+          "Found stale bot comment",
+          latestCommentUrl,
+          "on issue",
+          subjectUrl
+        );
 
         if (devEnv) {
           return new Promise((resolve) => {
