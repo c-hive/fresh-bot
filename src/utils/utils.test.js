@@ -42,6 +42,20 @@ describe("isBot", () => {
     });
   });
 
+  it("supports create-react-app", () => {
+    const body = `
+      This issue has been automatically marked as stale because it has not had any recent activity. It will be closed in 5 days if no further activity occurs.
+    `;
+
+    const data = {
+      user: {
+        type: "Bot",
+      },
+      body,
+    };
+    expect(isBot(data)).to.be.true;
+  });
+
   it("supports rails", () => {
     const body = `
       This issue has been automatically marked as stale because it has not been commented on for at least three months.

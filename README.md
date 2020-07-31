@@ -13,6 +13,7 @@ Issues don't go away just because you don't look. Many projects maintain a facad
 The action checks notifications and acts when a bot comments a stale warning, usually "*This issue has been automatically marked as stale*". It will then make a comment if no one else did that yet.
 
 It is strict about recognizing stale comments, checking for both user type ("bot") and the content of the message. This is to avoid false positives. The message can be custom, but most of them are covered, e.g.:
+- [create-react-app](https://github.com/facebook/create-react-app/issues/7838#issuecomment-592205202)
 - [rails](https://github.com/rails/rails/issues/37042#issuecomment-633906487)
 - [mocha](https://github.com/mochajs/mocha/issues/2582#issuecomment-341302100)
 - [electron-builder](https://github.com/electron-userland/electron-builder/issues/4233#issuecomment-663796807)
