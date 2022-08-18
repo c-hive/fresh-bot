@@ -11,7 +11,7 @@
     "test": "mocha src/**/*.test.js --require esm"
   },
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.9.1",
     "@octokit/action": "^2.0.3",
     "@octokit/plugin-throttling": "^3.2.0",
     "moment": "^2.24.0"
