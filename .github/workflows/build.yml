@@ -5,24 +5,23 @@ on:
     branches:
       - master
 
-env:
-  node_version: "12.x"
-
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.node_version }}
-      - uses: c-hive/gha-npm-cache@v1
+          node-version: 20.9.0
+          cache: npm
+
       - name: Install JS dependencies
-        run: npm install
+        run: npm ci
+
       - name: Build
         run: npm run build
+
       - name: Commit and push distified version to master
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
