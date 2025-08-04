@@ -94,6 +94,14 @@ export async function run() {
         }
 
         const commentParams = commentUrlParamsRegex.exec(subjectUrl);
+        console.debug(
+          "Extracting groups",
+          commentParams,
+          "from url",
+          subjectUrl,
+          "using regex",
+          commentUrlParamsRegex
+        );
 
         return octokit.issues.createComment({
           ...commentParams.groups,
