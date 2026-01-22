@@ -14,7 +14,7 @@
     "@actions/core": "^1.2.6",
     "@octokit/action": "^2.0.3",
     "@octokit/plugin-throttling": "^3.2.0",
-    "moment": "^2.24.0"
+    "moment": "^2.29.4"
   },
   "//devDependencies": {
     "@zeit/ncc": "build into a single file",
